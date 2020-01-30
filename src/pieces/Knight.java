@@ -16,19 +16,19 @@ public class Knight extends Pieces {
 	public Knight(Dimension dimension, int row, int col) {
 		setImage();
 		setPosition(dimension);
-		alive = true;
 		this.row = row;
 		this.col = col;
 	}
 
 	@Override
 	public void setImage() {
-		// TODO Auto-generated method stub
+		
 		try {
 
-			figure = ImageIO.read(new File("src/IMG/blackKnight.png"));
+			figure = new ImageIcon("src/IMG/blackKnight.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}
@@ -105,12 +105,13 @@ public class Knight extends Pieces {
 
 	@Override
 	public void newImage() {
-		// TODO Auto-generated method stub
+		
 		try {
 
-			figure = ImageIO.read(new File("src/IMG/WhiteKnight.png"));
+			figure = new ImageIcon("src/IMG/whiteKnight.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}

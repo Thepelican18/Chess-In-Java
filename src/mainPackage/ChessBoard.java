@@ -1,27 +1,16 @@
 package mainPackage;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.Timer;
+
 
 import pieces.Pawn;
 import pieces.Queen;
@@ -32,18 +21,22 @@ import pieces.Knight;
 
 public class ChessBoard extends JPanel {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Graphics2D g2D;
-	private Toolkit toolkit = Toolkit.getDefaultToolkit();
-	private Dimension resolution = toolkit.getScreenSize();
+	
+	private Dimension resolution = Toolkit.getDefaultToolkit().getScreenSize();
 	private Rectangle2D[][] paintBoard = new Rectangle2D[8][8];
 	private static final Dimension board[][] = new Dimension[8][8];
 	private static String[][] isBoardOcuped = new String[8][8];
-	private String team;
 	private double x, y;
-	private static String turn = "black";
-	private int count = 0, index;
-	private static int countPos = 0;
+	private String turn = "black",team;
+	private int countPos = 0, count = 0, index;
 	// ................................
+	private Pieces[] figures = new Pieces[16];
 	private Pawn[] pawn = new Pawn[16];
 	private Rock[] rock = new Rock[4];
 	private Knight[] knight = new Knight[4];
@@ -51,14 +44,10 @@ public class ChessBoard extends JPanel {
 	private Queen[] queen = new Queen[2];
 	private King[] king = new King[2];
 	// ................................
-	private Pieces[] figures = new Pieces[16];
-
-	private boolean draw = true;
+	private boolean draw = true, focus = false;
 	private Places place[] = new Places[32];
-	public boolean focus = false;
-
 	private static ChessBoard chessBoard = null;
-
+	// ................................
 	public static ChessBoard getInstance() {
 
 		if (chessBoard == null) {
@@ -66,7 +55,7 @@ public class ChessBoard extends JPanel {
 		}
 		return chessBoard;
 	}
-
+	// ................................
 	private ChessBoard() {
 
 	}
@@ -79,16 +68,29 @@ public class ChessBoard extends JPanel {
 		g2D = (Graphics2D) g;
 
 		setBackground(Color.GRAY.darker().darker());
+		g2D.drawImage(new ImageIcon("src/IMG/background.png").getImage(),  0, 0, null);
 
-		Rectangle2D rectangle = new Rectangle2D.Double(resolution.getWidth() / 4, (resolution.getHeight() * 30) / 1080,
-				resolution.getWidth() / 2, (resolution.getHeight() * 960) / 1080);
+		Rectangle2D rectangle1 = new Rectangle2D.Double((Frame.resWidth() * 443) / 1920, (Frame.resHeight() * 15) / 1080,
+				(Frame.resWidth() *1030) / 1920 , (Frame.resHeight() * 1030) / 1080);
+		
+		g2D.setPaint( new Color(78,30,0));
+		g2D.draw(rectangle1);
+		g2D.fill(rectangle1);
+		
+		
+		
+		Rectangle2D rectangle2 = new Rectangle2D.Double(Frame.resWidth() * 480 /1920, (Frame.resHeight() * 50) / 1080,
+				Frame.resWidth() / 2, (Frame.resHeight() * 960) / 1080);
 
 		// COLOR PRIMARIO
 		g2D.setPaint(Color.BLACK);
-		g2D.draw(rectangle);
-		g2D.fill(rectangle);
+		g2D.draw(rectangle2);
+		g2D.fill(rectangle2);
+		
+		
 		// COLOR SECUNDARIO
-		g2D.setPaint(new Color(200, 200, 200));
+		g2D.setPaint(new Color(197, 195, 196));
+		
 		paintBoard();
 		// Instancio las piezas una vez
 		if (draw) {
@@ -103,16 +105,16 @@ public class ChessBoard extends JPanel {
 
 		for (int i = 0; i < 8; i++) {
 			for (int j = 0; j < 8; j++) {
-				y = (((resolution.getHeight() * 960) / 1080) / 8) * i;
-				x = ((resolution.getWidth() / 2) / 8) * j;
+				y = (((Frame.resHeight() * 960) / 1080) / 8) * i;
+				x = ((Frame.resWidth() / 2) / 8) * j;
 
-				board[i][j] = new Dimension((int) (resolution.getWidth() / 4) + (int) x,
-						(int) (((resolution.getHeight() * 30) / 1080) / 2) + (int) y);
+				board[i][j] = new Dimension((int) (Frame.resWidth() / 4) + (int) x,
+						(int) (((Frame.resHeight() * 75) / 1080) / 2) + (int) y);
 				if ((i + j) % 2 == 0) {
 
-					paintBoard[i][j] = new Rectangle2D.Double((resolution.getWidth() / 4) + x,
-							((resolution.getHeight() * 30) / 1080) + y, ((resolution.getWidth() / 2) / 8),
-							(((resolution.getHeight() * 960) / 1080) / 8));
+					paintBoard[i][j] = new Rectangle2D.Double((Frame.resWidth() / 4) + x,
+							((Frame.resHeight() * 50) / 1080) + y, ((Frame.resWidth() / 2) / 8),
+							(((Frame.resHeight() * 960) / 1080) / 8));
 					g2D.draw(paintBoard[i][j]);
 					g2D.fill(paintBoard[i][j]);
 				}
@@ -125,7 +127,7 @@ public class ChessBoard extends JPanel {
 		count = 0;
 		index = 6;
 		team = "black";
-		// Coloca 64 JLabels fuera del tablero para en un futuro usarlos como posibles
+		// Coloca 32 JLabels fuera del tablero para en un futuro usarlos como posibles
 		// movimientos de la pieza
 		for (int i = 0; i < 32; i++) {
 
@@ -145,6 +147,7 @@ public class ChessBoard extends JPanel {
 
 			pawn[i] = new Pawn(board[index][count], index, count);
 			pawn[i].setTeam(team);
+			
 
 			if (team == "white") {
 				pawn[i].newImage();
@@ -303,6 +306,7 @@ public class ChessBoard extends JPanel {
 		} else {
 			turn = "black";
 		}
+		
 	}
 
 	public String getTurn() {
@@ -330,8 +334,8 @@ public class ChessBoard extends JPanel {
 
 		place[countPos].setDimensionPlace(board[i][j]);
 		place[countPos].setCoordPlace(i, j);
-		place[countPos].getLabelPlace().setBounds((int) place[countPos].getDimensionPlace().getWidth() + 5,
-				(int) place[countPos].getDimensionPlace().getHeight() + 20, 110, 110);
+		place[countPos].getLabelPlace().setBounds((int) place[countPos].getDimensionPlace().getWidth() + (Frame.resWidth() *  3/1080),
+				(int) place[countPos].getDimensionPlace().getHeight() + ( Frame.resHeight() * 35 / 1920), Frame.resWidth() * 110/1920, Frame.resHeight() * 110/1080);
 		countPos++;
 
 	}

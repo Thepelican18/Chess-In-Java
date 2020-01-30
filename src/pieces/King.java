@@ -26,9 +26,11 @@ public class King extends Pieces {
 	public void setImage() {
 		
 		try {
-			figure = ImageIO.read(new File("src/IMG/blackKing.png"));
+
+			figure = new ImageIcon("src/IMG/blackKing.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}
@@ -100,9 +102,11 @@ public class King extends Pieces {
 	public void newImage() {
 		
 		try {
-			figure = ImageIO.read(new File("src/IMG/whiteKing.png"));
+
+			figure = new ImageIcon("src/IMG/whiteKing.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}

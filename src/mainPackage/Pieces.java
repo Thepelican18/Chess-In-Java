@@ -19,7 +19,9 @@ public abstract class Pieces implements MouseListener{
 	protected Dimension pos;
 	protected static Object piece;
 	private String team;
-	protected Image figure,squarePlace;
+	protected Image figure;
+	protected int resWidth=Frame.resWidth()*120/1920;
+	protected int resHeight=Frame.resHeight()*120/1080;
 	protected JLabel labelFigure;
 	protected ChessBoard board = ChessBoard.getInstance();
 	protected int teamNum,row,col;

@@ -19,8 +19,14 @@ public class Places implements MouseListener {
 	private Dimension dimensionPlace;
 	public Places(Dimension dimension) {
 		try {
-			place = new JLabel(new ImageIcon(squarePlace = ImageIO.read(new File("src/IMG/movPlace.png"))));
-			}catch(IOException  f) {
+			
+			
+			squarePlace = new ImageIcon("src/IMG/movPlace.png").getImage();
+			squarePlace = squarePlace.getScaledInstance(Frame.resWidth()*120/1920,Frame.resHeight()*120/1080 , 0);
+			
+			
+			place = new JLabel(new ImageIcon(squarePlace));
+			}catch(Exception  f) {
 				System.out.println("No se ha podido crear la imagen square");
 			}
 		dimensionPlace = dimension;

@@ -17,7 +17,6 @@ public class Bishop extends Pieces {
 			
 			setImage();
 			setPosition(dimension);
-			alive = true;
 			this.row = row;
 			this.col = col;
 		}
@@ -25,11 +24,13 @@ public class Bishop extends Pieces {
 	
 	@Override
 	public void setImage() {
-		// TODO Auto-generated method stub
+		
 		try {
-			figure = ImageIO.read(new File("src/IMG/blackBishop.png"));
+
+			figure = new ImageIcon("src/IMG/blackBishop.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}
@@ -128,9 +129,11 @@ public class Bishop extends Pieces {
 	public void newImage() {
 		// TODO Auto-generated method stub
 		try {
-			figure = ImageIO.read(new File("src/IMG/whiteBishop.png"));
+
+			figure = new ImageIcon("src/IMG/whiteBishop.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}

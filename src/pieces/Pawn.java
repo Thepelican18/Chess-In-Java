@@ -23,7 +23,6 @@ public class Pawn extends Pieces {
 		
 		setImage();
 		setPosition(dimension);
-		alive = true;
 		this.row = row;
 		this.col = col;
 	}
@@ -33,9 +32,10 @@ public class Pawn extends Pieces {
 
 		try {
 
-			figure = ImageIO.read(new File("src/IMG/blackPawn.png"));
+			figure = new ImageIcon("src/IMG/blackPawn.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 
@@ -43,10 +43,10 @@ public class Pawn extends Pieces {
 	@Override
 	public void newImage() {
 		try {
-
-			figure = ImageIO.read(new File("src/IMG/whitePawn.png"));
+			figure = new ImageIcon("src/IMG/whitePawn.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight ,0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}

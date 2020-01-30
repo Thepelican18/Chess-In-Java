@@ -27,9 +27,11 @@ public class Rock extends Pieces {
 	public void setImage() {
 		
 		try {
-			figure = ImageIO.read(new File("src/IMG/blackRock.png"));
+
+			figure = new ImageIcon("src/IMG/blackRock.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 		
@@ -107,9 +109,11 @@ public class Rock extends Pieces {
 	@Override
 	public void newImage() {
 		try {
-			figure = ImageIO.read(new File("src/IMG/whiteRock.png"));
+
+			figure = new ImageIcon("src/IMG/whiteRock.png").getImage();
+			figure = figure.getScaledInstance(resWidth,resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (IOException f) {
+		} catch (Exception f) {
 			System.out.println("No se encuentra la imagen");
 		}
 	}
