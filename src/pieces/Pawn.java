@@ -109,6 +109,7 @@ public class Pawn extends Pieces {
 							
 						}
 					}
+					board.check(false);
 				}
 	public void firstMovementDone(){
 		isFirstMovement = false;

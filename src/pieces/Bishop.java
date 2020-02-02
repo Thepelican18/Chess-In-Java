@@ -120,6 +120,7 @@ public class Bishop extends Pieces {
 									count++;
 								}
 						}
+						board.check(false);
 		
 		
 		

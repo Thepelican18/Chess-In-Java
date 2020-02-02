@@ -12,12 +12,12 @@ import mainPackage.Pieces;
 
 public class King extends Pieces {
 	private boolean castling = true;
+	private boolean check = false;
 	
 	public King(Dimension dimension,int row,int col) {
 		
 		setImage();
 		setPosition(dimension);
-		alive = true;
 		this.row = row;
 		this.col = col;
 	}
@@ -116,6 +116,18 @@ public class King extends Pieces {
 		
 		
 	}
+	
+	public void check() {
+		
+		check = true;
+		
+	}
+	public boolean isCheck() {
+		
+		return check;
+	}
+	
+	
 
 	public void castlingDone() {
 		castling = false;

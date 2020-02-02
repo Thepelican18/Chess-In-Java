@@ -13,23 +13,38 @@ import javax.swing.JLabel;
 
 public class Places implements MouseListener {
 	protected JLabel place;
-	private Image squarePlace;
+	private Image squarePlace,checkPlaceIMG;
 	private int col,row;
 	private ChessBoard board = ChessBoard.getInstance();
 	private Dimension dimensionPlace;
 	public Places(Dimension dimension) {
 		try {
 			
-			
 			squarePlace = new ImageIcon("src/IMG/movPlace.png").getImage();
 			squarePlace = squarePlace.getScaledInstance(Frame.resWidth()*120/1920,Frame.resHeight()*120/1080 , 0);
-			
-			
+
 			place = new JLabel(new ImageIcon(squarePlace));
 			}catch(Exception  f) {
 				System.out.println("No se ha podido crear la imagen square");
 			}
 		dimensionPlace = dimension;
+	}
+	public Places(int row, int col) {
+		
+		try {
+			
+			checkPlaceIMG = new ImageIcon("src/IMG/checkPlace.png").getImage();
+			checkPlaceIMG = checkPlaceIMG.getScaledInstance(Frame.resWidth()*120/1920,Frame.resHeight()*120/1080 , 0);
+
+			place = new JLabel(new ImageIcon(checkPlaceIMG));
+			}catch(Exception  f) {
+				System.out.println("No se ha podido crear la imagen checkPlace");
+			}
+		
+		
+		
+		dimensionPlace = new Dimension(row,col);
+		
 	}
 	public JLabel getLabelPlace() {
 		return place; 
@@ -48,7 +63,7 @@ public class Places implements MouseListener {
 		}
 	}
 	public void setCoordPlace(int row, int col) {
-		this.row =row;
+		this.row = row;
 		this.col = col;
 	}
 	public int getRow() {

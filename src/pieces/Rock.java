@@ -104,6 +104,7 @@ public class Rock extends Pieces {
 				board.setNextMov(row,i);
 			}
 		}
+		board.check(false);
 	}
 
 	@Override

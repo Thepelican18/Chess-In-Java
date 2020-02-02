@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.geom.Rectangle2D;
 
 import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -21,9 +23,6 @@ import pieces.Knight;
 
 public class ChessBoard extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	private Graphics2D g2D;
@@ -44,8 +43,8 @@ public class ChessBoard extends JPanel {
 	private Queen[] queen = new Queen[2];
 	private King[] king = new King[2];
 	// ................................
-	private boolean draw = true, focus = false;
-	private Places place[] = new Places[32];
+	private boolean draw = true, focus = false,check = false;
+	private Places place[] = new Places[33];
 	private static ChessBoard chessBoard = null;
 	// ................................
 	public static ChessBoard getInstance() {
@@ -68,7 +67,7 @@ public class ChessBoard extends JPanel {
 		g2D = (Graphics2D) g;
 
 		setBackground(Color.GRAY.darker().darker());
-		g2D.drawImage(new ImageIcon("src/IMG/background.png").getImage(),  0, 0, null);
+		//g2D.drawImage(new ImageIcon("src/IMG/background.png").getImage(),  0, 0, null);
 
 		Rectangle2D rectangle1 = new Rectangle2D.Double((Frame.resWidth() * 443) / 1920, (Frame.resHeight() * 15) / 1080,
 				(Frame.resWidth() *1030) / 1920 , (Frame.resHeight() * 1030) / 1080);
@@ -135,7 +134,10 @@ public class ChessBoard extends JPanel {
 			add(place[i].getLabelPlace());
 			place[i].getLabelPlace().addMouseListener(place[i]);
 		}
-
+		place[32] = new Places(-1000,-1000);
+		add(place[32].getLabelPlace());
+		
+	
 		// Dibujar peones
 		for (int i = 0; i < 16; i++) {
 
@@ -331,18 +333,48 @@ public class ChessBoard extends JPanel {
 
 	public void setNextMov(int i, int j) {
 		// CREA LAS CASILLAS A LAS QUE SE PUEDE MOVER ESA PIEZA
-
+		
+		if(!check) {	
 		place[countPos].setDimensionPlace(board[i][j]);
 		place[countPos].setCoordPlace(i, j);
 		place[countPos].getLabelPlace().setBounds((int) place[countPos].getDimensionPlace().getWidth() + (Frame.resWidth() *  3/1080),
 				(int) place[countPos].getDimensionPlace().getHeight() + ( Frame.resHeight() * 35 / 1920), Frame.resWidth() * 110/1920, Frame.resHeight() * 110/1080);
 		countPos++;
+		}else {
+			Dimension dim1;
+			if(team == "black") {
+				dim1 = king[1].getPosition();
+			}else {
+				dim1 = king[0].getPosition();
+			}
+			Dimension dim2 = new Dimension(board[i][j]);
+			
+			if((dim1.getHeight() == dim2.getHeight() && dim1.getWidth() == dim2.getWidth() )) {
+				
+				place[32].setDimensionPlace(dim1);
+				place[32].setCoordPlace(i, j);
+				place[32].getLabelPlace().setBounds((int) place[32].getDimensionPlace().getWidth() + (Frame.resWidth() *  3/1080),
+						(int) place[32].getDimensionPlace().getHeight() + ( Frame.resHeight() * 35 / 1920), Frame.resWidth() * 110/1920, Frame.resHeight() * 110/1080);
+				
+			}
+		}
 
+	}
+	public void isCheck(int row, int col, int index,Pieces[] figure) {
+		
+		check = true;
+		team = figure[index].getTeam();
+		System.out.println(figure);
+		figure[index].pieceMovement();
+		
+		
 	}
 
 	public void movPiece(Dimension dimension, int row, int col) {
 		isFocus(false);
-
+		place[32].setDimensionPlace(new Dimension(-1000, -1000));
+		place[32].getLabelPlace().setBounds((int) place[32].getDimensionPlace().getWidth() + 5,
+				(int) place[32].getDimensionPlace().getHeight() + 17, 110, 110);
 		// COMPRUEBA SI LAS PIEZAS SE PUEDEN COMER O MOVER
 		for (int i = 0; i < 16; i++) {
 			// COMPRUEBA SI TIENE QUE MATAR A UN PEON CORONADO
@@ -361,7 +393,11 @@ public class ChessBoard extends JPanel {
 					isBoardOcuped[figures[i].getRow()][figures[i].getCol()] = null;
 					figures[i].setCoord(row, col);
 					isBoardOcuped[figures[i].getRow()][figures[i].getCol()] = figures[i].getTeam();
+					isCheck(figures[i].getRow(),figures[i].getCol(),i,figures);
 				}
+				
+					
+				
 			}
 			// TORRE--------------------------------------------------------TORRE
 			if (i < rock.length) {
@@ -382,6 +418,7 @@ public class ChessBoard extends JPanel {
 					rock[i].setCoord(row, col);
 					isBoardOcuped[rock[i].getRow()][rock[i].getCol()] = rock[i].getTeam();
 					rock[i].castlingOut();
+					isCheck(rock[i].getRow(),rock[i].getCol(),i,rock);
 				}
 			}
 			// CABALLO--------------------------------------------------------CABALLO
@@ -401,6 +438,7 @@ public class ChessBoard extends JPanel {
 					isBoardOcuped[knight[i].getRow()][knight[i].getCol()] = null;
 					knight[i].setCoord(row, col);
 					isBoardOcuped[knight[i].getRow()][knight[i].getCol()] = knight[i].getTeam();
+					isCheck(knight[i].getRow(),knight[i].getCol(),i,knight);
 				}
 			}
 			// ALFIL--------------------------------------------------------ALFIL
@@ -420,6 +458,7 @@ public class ChessBoard extends JPanel {
 					isBoardOcuped[bishop[i].getRow()][bishop[i].getCol()] = null;
 					bishop[i].setCoord(row, col);
 					isBoardOcuped[bishop[i].getRow()][bishop[i].getCol()] = bishop[i].getTeam();
+					isCheck(bishop[i].getRow(),bishop[i].getCol(),i,bishop);
 				}
 			}
 			// REINA--------------------------------------------------------REINA
@@ -435,22 +474,18 @@ public class ChessBoard extends JPanel {
 				// MUEVE LA REINA QUE SE HABIA SELECCIONADO ANTES
 				if (queen[i].getLabel().equals(Queen.piece)) {
 
+					
 					queen[i].setPosition(dimension);
 					isBoardOcuped[queen[i].getRow()][queen[i].getCol()] = null;
 					queen[i].setCoord(row, col);
 					isBoardOcuped[queen[i].getRow()][queen[i].getCol()] = queen[i].getTeam();
+					isCheck(queen[i].getRow(),queen[i].getCol(),i,queen);
 				}
 			}
 			if (i < king.length) {
 				// COMPRUEBA SI MUERE EL REY
 				if (king[i].getPosition().equals(board[row][col])) {
-
-					try {
-						Thread.sleep(20000);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					System.exit(0);
 				}
 				// MUEVE EL REY QUE SE HABIA SELECCIONADO ANTES
 				if (king[i].getLabel().equals(King.piece)) {
@@ -479,6 +514,7 @@ public class ChessBoard extends JPanel {
 				pawn[i].setCoord(row, col);
 				isBoardOcuped[pawn[i].getRow()][pawn[i].getCol()] = pawn[i].getTeam();
 				pawn[i].firstMovementDone();
+				isCheck(pawn[i].getRow(),pawn[i].getCol(),i,pawn);
 
 				if (pawn[i].getRow() == 7 || pawn[i].getRow() == 0) {
 
@@ -501,6 +537,7 @@ public class ChessBoard extends JPanel {
 								pawn[i].getCol()), pawn[i].getTeam());
 					}
 				}
+				
 			}
 		}
 		nextTurn();
@@ -600,13 +637,11 @@ public class ChessBoard extends JPanel {
 				
 		}
 		
-	
-			
-	
-	
+	}
+	public void check(boolean bool) {
 		
-		
-		
+		check = bool;
 	}
 }
+
 	

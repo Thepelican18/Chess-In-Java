@@ -101,6 +101,7 @@ public class Knight extends Pieces {
 				}
 			}
 		}
+		board.check(false);
 	}
 
 	@Override

@@ -186,6 +186,7 @@ public class Queen extends Pieces {
 				board.setNextMov(row, i);
 			}
 		}
+		board.check(false);
 
 	}
 
