@@ -59,9 +59,18 @@ public class Pawn extends Pieces {
 		
 					int i = row;
 					int j = col;
-					//COMPRUEBA SI EL PEON SE PUEDE CORONAR
+					//COMPRUEBA SI EL PEON SE PUEDE SALIR DEL LIMITE
 					
-					
+					System.out.println(teamNum + " " + i);
+					if(teamNum == 1 && i == 0) {
+						System.out.println("entrado");
+						board.check(false);
+						
+						return;
+					}else if(teamNum == -1 && i == 7) {
+						board.check(false);
+						return;
+					}
 					
 					
 					//COMPRUEBA SI EL PEON PUEDE MATAR
