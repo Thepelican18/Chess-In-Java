@@ -1,107 +1,112 @@
 package pieces;
 
 import java.awt.Dimension;
-import java.awt.event.MouseEvent;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import mainPackage.Pieces;
 
+// CLASE QUE CONTIENE LAS CARACTERISTICAS DE LA TORRE
+// METODOS COMENTADOS EN LA CLASE PADRE PIECES
 public class Rock extends Pieces {
-	private static int count1 = 0,count2 = 0;
-	private boolean castling = true;
-	
-	public Rock(Dimension dimension,int row, int col) {
-		setImage();
-		setPosition(dimension);
-		this.row = row;
-		this.col = col;
+
+	private static int count1 = 0, count2 = 0;
+	private boolean castling = true;// Variable para el enroque
+
+	public Rock(Dimension dimension, int row, int col) {
+
+		super(dimension, row, col);
+
 	}
 
+	// METODOS ABSTRACTOS
 
 	@Override
 	public void setImage() {
-		
-		try {
 
-			figure = new ImageIcon("src/IMG/blackRock.png").getImage();
-			figure = figure.getScaledInstance(resWidth,resHeight, 0);
-			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (Exception f) {
-			System.out.println("No se encuentra la imagen");
-		}
-		
+		figure = new ImageIcon("src/IMG/blackRock.png").getImage();
+		figure = figure.getScaledInstance(resWidth, resHeight, 0);
+		labelFigure = new JLabel(new ImageIcon(figure));
+
 	}
 
 	@Override
 	public void pieceMovement() {
-		
-		//MOVIMIENTO VERTICAL 
-		
-			
-			for (int i = row - 1; i > -1; i--) {
 
-				if(board.getIsBoardOcuped(i, col) != null) {
-					if(board.getIsBoardOcuped(i, col) != getTeam()) {
-						
-						board.setNextMov(i,col);
-						break;
-					}
-					
-					break;
-				} else{
-					
-					board.setNextMov(i,col);
-				}
-			
-		}
-			for (int i = row + 1; i < 8; i++) {
+		// MOVIMIENTO VERTICAL
 
-				if(board.getIsBoardOcuped(i, col) != null) {
-					if(board.getIsBoardOcuped(i, col) != getTeam()) {
-						
-						board.setNextMov(i,col);
-						break;
-					}
-					break;
-				} else {
-					
-					board.setNextMov(i,col);
-				}
-			}
-		
-		//MOVIMIENTO HORIZONTAL
-		for(int i = col+1;i < 8 ;i++) {
-		
-			
-			if(board.getIsBoardOcuped(row, i) != null) {
+		for (int i = row - 1; i > -1; i--) {
+
+			if (board.getIsBoardOcuped(i, col) != null) {
 				
-				if(board.getIsBoardOcuped(row, i) != getTeam()) {
-					board.setNextMov(row,i);
+				if (board.getIsBoardOcuped(i, col) != getTeam()) {
+
+					board.setNextMov(i, col);
 					break;
+					
 				}
-				System.out.println("el camino esta bloqueado " + row + " " + i);
 				break;
-			}else if(board.getIsBoardOcuped(row, i) == null) {
-				board.setNextMov(row,i);
+				
+			} else {
+
+				board.setNextMov(i, col);
+				
+			}
+
+		}
+		for (int i = row + 1; i < 8; i++) {
+
+			if (board.getIsBoardOcuped(i, col) != null) {
+				
+				if (board.getIsBoardOcuped(i, col) != getTeam()) {
+
+					board.setNextMov(i, col);
+					break;
+					
+				}
+				break;
+				
+			} else {
+
+				board.setNextMov(i, col);
+				
 			}
 		}
-		System.out.println("Movimiento hacia la izquierda");
-		for(int i = col-1;i > -1 ;i--) {
-			System.out.println(row +" "+ i);
-			if(board.getIsBoardOcuped(row, i) != null) {
-				if(board.getIsBoardOcuped(row, i) != getTeam()) {
-					board.setNextMov(row,i);
+
+		// MOVIMIENTO HORIZONTAL
+		for (int i = col + 1; i < 8; i++) {
+
+			if (board.getIsBoardOcuped(row, i) != null) {
+
+				if (board.getIsBoardOcuped(row, i) != getTeam()) {
+					
+					board.setNextMov(row, i);
 					break;
+					
 				}
-				System.out.println("el camino esta bloqueado " + row + " " + i);
 				break;
-			}else if(board.getIsBoardOcuped(row, i) == null) {
-				board.setNextMov(row,i);
+				
+			} else if (board.getIsBoardOcuped(row, i) == null) {
+				
+				board.setNextMov(row, i);
+				
+			}
+		}
+		for (int i = col - 1; i > -1; i--) {
+			
+			if (board.getIsBoardOcuped(row, i) != null) {
+				
+				if (board.getIsBoardOcuped(row, i) != getTeam()) {
+					
+					board.setNextMov(row, i);
+					break;
+					
+				}
+				break;
+				
+			} else if (board.getIsBoardOcuped(row, i) == null) {
+				
+				board.setNextMov(row, i);
+				
 			}
 		}
 		board.check(false);
@@ -109,30 +114,41 @@ public class Rock extends Pieces {
 
 	@Override
 	public void newImage() {
-		try {
-
+		
 			figure = new ImageIcon("src/IMG/whiteRock.png").getImage();
-			figure = figure.getScaledInstance(resWidth,resHeight, 0);
+			figure = figure.getScaledInstance(resWidth, resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (Exception f) {
-			System.out.println("No se encuentra la imagen");
-		}
+	
 	}
+
 	@Override
 	public void setGraveyardDimension() {
-		if(getTeam() == "white") {
-			setPosition(new Dimension(100 + (10 * count1),500));
+		
+		if (getTeam() == "white") {
+			
+			setPosition(new Dimension(100 + (10 * count1), 500));
 			count1++;
-		}else {
-			setPosition(new Dimension(1500+ (10 * count2),500));
+			
+		} else {
+			
+			setPosition(new Dimension(1500 + (10 * count2), 500));
 			count2++;
+			
 		}
 	}
-	public void castlingOut() {
-		castling = false;
-	}
-	public boolean getCastling() {
-		return castling;
-	}
 
+	public void castlingOut() {
+		
+		castling = false;
+		
+	}
+	
+	//METODOS PROPIOS
+	
+	//METODO QUE DEVUELVE SI LA TORRE PUEDE HACER ENROQUE
+	public boolean getCastling() {
+		
+		return castling;
+		
+	}
 }

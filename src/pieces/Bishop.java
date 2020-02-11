@@ -1,154 +1,178 @@
 package pieces;
 
 import java.awt.Dimension;
-import java.io.File;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
-
 import mainPackage.Pieces;
 
+// CLASE QUE CONTIENE LAS CARACTERISTICAS DEL ALFIL
+// METODOS COMENTADOS EN LA CLASE PADRE PIECES
 public class Bishop extends Pieces {
-	private static int count1 = 0,count2 = 0;
+
+	private static int count1 = 0, count2 = 0;
+
+	public Bishop(Dimension dimension, int row, int col) {
+
+		super(dimension, row, col);
+
+	}
+
 	
-	public Bishop(Dimension dimension,int row,int col) {
-			
-			setImage();
-			setPosition(dimension);
-			this.row = row;
-			this.col = col;
-		}
-	
-	
+	// METODOS ABSTRACTOS
+
 	@Override
 	public void setImage() {
-		
-		try {
 
-			figure = new ImageIcon("src/IMG/blackBishop.png").getImage();
-			figure = figure.getScaledInstance(resWidth,resHeight, 0);
-			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (Exception f) {
-			System.out.println("No se encuentra la imagen");
-		}
+		figure = new ImageIcon("src/IMG/blackBishop.png").getImage();
+		figure = figure.getScaledInstance(resWidth, resHeight, 0);
+		labelFigure = new JLabel(new ImageIcon(figure));
+
 	}
 
 	@Override
 	public void pieceMovement() {
-		
-		//Movimiento diagonal izquierda superior
+
 		int count = 1;
-		for(int i = (row-1) ;i > -1 ;i--) {
-		
-			if(col - count < 0) {
+		// MOVIMIENTO DIAGONAL IZQUIERDA SUPERIOR
+		for (int i = (row - 1); i > -1; i--) {
+
+			if (col - count < 0) {
+
 				break;
+
 			}
-				if(board.getIsBoardOcuped(i, col- count) != null) {
-			if(board.getIsBoardOcuped(i, col- count) != getTeam()) {
-				board.setNextMov(i,col- count);
+			
+			if (board.getIsBoardOcuped(i, col - count) != null) {
+				
+				if (board.getIsBoardOcuped(i, col - count) != getTeam()) {
+					
+					board.setNextMov(i, col - count);
+					count++;
+					break;
+					
+				}
 				count++;
 				break;
-			}
-			count++;
-			break;
-				}else {
-					board.setNextMov(i,col - count);
-					count++;
-				}
-		}
-		//Movimiento diagonal derecho superior
-				count = 1;
-				for(int i = (row-1) ;i > -1 ;i--) {
-					if(col + count > 7) {
-						break;
-					}
-					
-					
-						if(board.getIsBoardOcuped(i, col + count) != null) {
-					if(board.getIsBoardOcuped(i, col + count) != getTeam()) {
-						board.setNextMov(i,col + count);
-						count++;
-						break;
-					}
-					count++;
-					break;
-						}else {
-							board.setNextMov(i,col + count);
-							count++;
-						}
-				}
-				//.....................................
-				//Movimiento diagonal izquierda inferior
-				 count = 1;
-				for(int i = (row+1) ;i < 8 ;i++) {
 				
-					if(col - count < 0) {
-						break;
-					}
-						if(board.getIsBoardOcuped(i, col- count) != null) {
-					if(board.getIsBoardOcuped(i, col- count) != getTeam()) {
-						board.setNextMov(i,col- count);
-						count++;
-						break;
-					}
+			} else {
+				
+				board.setNextMov(i, col - count);
+				count++;
+				
+			}
+		}
+		// MOVIMIENTO DIAGONAL DERECHO SUPERIOR
+		count = 1;
+		for (int i = (row - 1); i > -1; i--) {
+			
+			if (col + count > 7) {
+				
+				break;
+				
+			}
+
+			if (board.getIsBoardOcuped(i, col + count) != null) {
+				
+				if (board.getIsBoardOcuped(i, col + count) != getTeam()) {
+					
+					board.setNextMov(i, col + count);
 					count++;
 					break;
-						}else {
-							board.setNextMov(i,col - count);
-							count++;
-						}
+					
 				}
-				//Movimiento diagonal derecho superior
-						count = 1;
-						for(int i = (row+1) ;i < 8 ;i++) {
-							if(col + count > 7) {
-								break;
-							}
-							
-								if(board.getIsBoardOcuped(i, col + count) != null) {
-							if(board.getIsBoardOcuped(i, col + count) != getTeam()) {
-								board.setNextMov(i,col + count);
-								count++;
-								break;
-							}
-							count++;
-							break;
-								}else {
-									board.setNextMov(i,col + count);
-									count++;
-								}
-						}
-						board.check(false);
-		
-		
-		
+				count++;
+				break;
+				
+			} else {
+				
+				board.setNextMov(i, col + count);
+				count++;
+				
+			}
+		}
+		// .....................................
+		// MOVIMIENTO DIAGONAL IZQUIERDA INFERIOR
+		count = 1;
+		for (int i = (row + 1); i < 8; i++) {
+
+			if (col - count < 0) {
+				
+				break;
+				
+			}
+			if (board.getIsBoardOcuped(i, col - count) != null) {
+				
+				if (board.getIsBoardOcuped(i, col - count) != getTeam()) {
+					
+					board.setNextMov(i, col - count);
+					count++;
+					break;
+					
+				}
+				count++;
+				break;
+				
+			} else {
+				
+				board.setNextMov(i, col - count);
+				count++;
+				
+			}
+		}
+		// MOVIMIENTO DIAGONAL DERECHO INFERIOR
+		count = 1;
+		for (int i = (row + 1); i < 8; i++) {
+			
+			if (col + count > 7) {
+				
+				break;
+				
+			}
+
+			if (board.getIsBoardOcuped(i, col + count) != null) {
+				
+				if (board.getIsBoardOcuped(i, col + count) != getTeam()) {
+					
+					board.setNextMov(i, col + count);
+					count++;
+					break;
+					
+				}
+				count++;
+				break;
+				
+			} else {
+				
+				board.setNextMov(i, col + count);
+				count++;
+				
+			}
+		}
+		board.check(false);
 	}
 
 	@Override
 	public void newImage() {
-		// TODO Auto-generated method stub
-		try {
-
+		
 			figure = new ImageIcon("src/IMG/whiteBishop.png").getImage();
-			figure = figure.getScaledInstance(resWidth,resHeight, 0);
+			figure = figure.getScaledInstance(resWidth, resHeight, 0);
 			labelFigure = new JLabel(new ImageIcon(figure));
-		} catch (Exception f) {
-			System.out.println("No se encuentra la imagen");
-		}
+
 	}
 
 	@Override
 	public void setGraveyardDimension() {
-		
-		if(getTeam() == "white") {
-			setPosition(new Dimension(100 + (10 * count1),900));
+
+		if (getTeam() == "white") {
+			
+			setPosition(new Dimension(100 + (10 * count1), 900));
 			count1++;
-		}else {
-			setPosition(new Dimension(1500+ (10 * count2),900));
+			
+		} else {
+			
+			setPosition(new Dimension(1500 + (10 * count2), 900));
 			count2++;
+			
 		}
 	}
-
 }
